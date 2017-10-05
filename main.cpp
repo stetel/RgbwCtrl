@@ -124,7 +124,6 @@ static void parseargs(int argc, char **argv)
 
 #define IDX(x,y)    (y*height + x)
 
-
 int main(int argc, char *argv[])
 {
     sprintf(VERSIONSTR, "%d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO);
@@ -149,7 +148,8 @@ int main(int argc, char *argv[])
 	
 	char cmd;
 	int loadingindex=0;
-	while (std::cin.get(cmd) && running)
+	bool parseerror = false;
+	while (std::cin.get(cmd) && running && !parseerror)
 	{
 		switch(cmd){
 			case 'C':  // Clear matrix
@@ -162,6 +162,7 @@ int main(int argc, char *argv[])
 			{
 				unsigned long pxcolor;
 				std::cin >> std::hex >> pxcolor;
+				if(std::cin.fail()) {parseerror = true; break;}
 				ledmatrix->print(pxcolor);
 				loadingindex=0;
 				break;
@@ -176,6 +177,7 @@ int main(int argc, char *argv[])
 			{
 				unsigned long delay;
 				std::cin >> std::dec >> delay;
+				if(std::cin.fail()) {parseerror = true; break;}
 				usleep(delay * 1000);
 				break;
 			}
@@ -185,6 +187,7 @@ int main(int argc, char *argv[])
 			{
 				unsigned long pxcolor;
 				std::cin >> std::hex >> pxcolor;
+				if(std::cin.fail()) {parseerror = true; break;}
 				if(loadingindex < nrofleds) { canvas[loadingindex++].set(pxcolor) ;}
 				break;
 			}
@@ -193,6 +196,8 @@ int main(int argc, char *argv[])
 			break;
 		}
 	}
+
+	if(parseerror) std::cerr << "Parsing error" << std::endl;
 
 	if(clear_on_exit) {ledmatrix->clear();	}
 
