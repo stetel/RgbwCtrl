@@ -75,26 +75,24 @@ static void parseargs(int argc, char **argv)
 			break;
 
 		case 'h':
-			fprintf(stderr, "%s version %s\n", argv[0], VERSIONSTR);
-			fprintf(stderr, "Usage: %s \n"
+			std::cerr << argv[0] << " Stetel srl version " << VERSIONSTR << std::endl;
+			std::cerr << "Usage: " << argv[0] << std::endl  << 
 				"-h (--help)    - this information\n"
 				"-x (--width)   - matrix width (default 10)\n"
 				"-y (--height)  - matrix height (default 10)\n"
 				"-c (--clear)   - clear matrix on exit.\n"
-				"-v (--version) - version information\n"
-				, argv[0]);
+				"-v (--version) - version information\n" ;
 			exit(-1);
 
 		case 'c':
 			clear_on_exit=1;
 			break;
 
-
 		case 'y':
 			if (optarg) {
 				height = atoi(optarg);
 				if (height <= 0) {
-					printf ("invalid height %d\n", height);
+					std::cerr << "invalid height " << height << std::endl;
 					exit (-1);
 				}
 			}
@@ -104,14 +102,14 @@ static void parseargs(int argc, char **argv)
 			if (optarg) {
 				width = atoi(optarg);
 				if (width <= 0) {
-					printf ("invalid width %d\n", width);
+					std::cerr << "invalid width " << width << std::endl;
 					exit (-1);
 				}
 			}
 			break;
 
 		case 'v':
-			fprintf(stderr, "%s version %s\n", argv[0], VERSIONSTR);
+			std::cerr << argv[0] << " version " << VERSIONSTR << std::endl;
 			exit(-1);
 
 		case '?':
@@ -147,13 +145,52 @@ int main(int argc, char *argv[])
 	// everything is linear --> use facility macros like IDX() above
     Sk6812_Leds::Led* canvas = ledmatrix->getCanvas();
 
+	int nrofleds = width*height;
 	
-	while(running) {
-
-		char cmd;
-		while (std::cin.get(cmd))
-		{
-printf("char found %c\n",cmd);
+	char cmd;
+	int loadingindex=0;
+	while (std::cin.get(cmd) && running)
+	{
+		switch(cmd){
+			case 'C':  // Clear matrix
+			case 'c':
+				ledmatrix->clear(false);
+				loadingindex=0;
+				break;
+			case 'F':  // fill matrix with a particular color
+			case 'f':
+			{
+				unsigned long pxcolor;
+				std::cin >> std::hex >> pxcolor;
+				ledmatrix->print(pxcolor);
+				loadingindex=0;
+				break;
+			}
+			case 'D': // Display the matrix (load the leds)
+			case 'd':
+				ledmatrix->display();
+				loadingindex=0;
+				break;
+			case 'W': // Wait for given milliseconds
+			case 'w': 
+			{
+				unsigned long delay;
+				std::cin >> std::dec >> delay;
+				usleep(delay * 1000);
+				break;
+			}
+			case '0':
+				break;
+			case 'x':
+			{
+				unsigned long pxcolor;
+				std::cin >> std::hex >> pxcolor;
+				if(loadingindex < nrofleds) { canvas[loadingindex++].set(pxcolor) ;}
+				break;
+			}
+			case '#':
+				while(std::cin.get(cmd)) { if(cmd == '\n') {break;} }
+			break;
 		}
 	}
 
@@ -161,6 +198,6 @@ printf("char found %c\n",cmd);
 
 	if(ledmatrix) { delete ledmatrix; } 
 
-    printf ("Thanks for using me (Cignogay)\n");
+    std::cout << std::endl << "Thanks for using me (Cignogay)" << std::endl;
     return 0;
 }

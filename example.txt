@@ -1,0 +1,53 @@
+# EXAMPLE RGBWCTRL SCRIPT
+#
+# Comments: A line starting with # is a command line
+#
+# Clear: Use 'C' to clear the matrix i.e. all colors off
+
+C
+
+
+# Empty lines: you can have as many empty lines you prefer
+
+# Fill: Use 'F <hexnumber' to fill the martix with a particolare colors
+#       The format of the <hexnumber> must be 0xRRGGBBWW
+#       Example: F 0x40000000  fills the matrix with a vivid red
+
+F 0x40000000
+
+
+# Display: Use 'D' to render the current matrix on the actual leds
+#
+
+D
+
+
+# Wait: Use 'W <millisecs>' to wait for a given amount of milliseconds
+#       Note that the time is expressed in decimal format (not hex)
+#       Example: W 2000  waits for  2 seconds
+
+W 2000
+
+
+# Load Data: Write simply data in format <hexnumber>,<hexnumber>,...
+#            to fill the matrix
+#            The format of <hexnumber> is 0xRRGGBBWW
+#            Example: 0x40000000,0x00400000,0x000004000, ... 
+#            Values can be separated by comma, space or end of line
+#            When using C or D or F the loading pointer is reset
+
+0x10000000,0x10000000,0x10000000,0x10000000,0x10000000,0x10000000,0x10000000,0x10000000,0x10000000,0x10000000
+0x20000000,0x20000000,0x20000000,0x20000000,0x20000000,0x20000000,0x20000000,0x20000000,0x20000000,0x20000000
+0x30000000,0x30000000,0x30000000,0x30000000,0x30000000,0x30000000,0x30000000,0x30000000,0x30000000,0x30000000
+0x40000000,0x40000000,0x40000000,0x40000000,0x40000000,0x40000000,0x40000000,0x40000000,0x40000000,0x40000000
+0x50000000,0x50000000,0x50000000,0x50000000,0x50000000,0x50000000,0x50000000,0x50000000,0x50000000,0x50000000
+0x60000000,0x60000000,0x60000000,0x60000000,0x60000000,0x60000000,0x60000000,0x60000000,0x60000000,0x60000000
+0x70000000,0x70000000,0x70000000,0x70000000,0x70000000,0x70000000,0x70000000,0x70000000,0x70000000,0x70000000
+0x80000000,0x80000000,0x80000000,0x80000000,0x80000000,0x80000000,0x80000000,0x80000000,0x80000000,0x80000000
+0x90000000,0x90000000,0x90000000,0x90000000,0x90000000,0x90000000,0x90000000,0x90000000,0x90000000,0x90000000
+0xa0000000,0xa0000000,0xa0000000,0xa0000000,0xa0000000,0xa0000000,0xa0000000,0xa0000000,0xa0000000,0xa0000000
+
+D
+
+
+

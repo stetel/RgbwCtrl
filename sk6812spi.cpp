@@ -33,14 +33,11 @@ class InitException : public std::exception  {
 
 
 
-Sk6812_Leds::Sk6812_Leds(int nrleds) {
+Sk6812_Spi::Sk6812_Spi(int nrleds) : Sk6812_Leds(nrleds) {
 
     if(initSpi() == false) {
         throw initex;
     }
-
-    pixels = new Led[nrleds];
-    length = nrleds;
 
     int spi_data_bits = length * COLORS_PER_LED * SYMBOLS_PER_COLOR * BITS_PER_SYMBOL ;
     spidatalen =  (spi_data_bits + SPI_RESET_BITS + 7)/8 ;
@@ -49,30 +46,18 @@ Sk6812_Leds::Sk6812_Leds(int nrleds) {
     spidata = new unsigned char[spidatalen];
 }
 
-Sk6812_Leds::~Sk6812_Leds() {
+Sk6812_Spi::~Sk6812_Spi() {
     delete[] spidata;
-    delete[] pixels;
     closeSpi();
 }
 
-
-void Sk6812_Leds::display() {
+// overrideing the default display function
+void Sk6812_Spi::display() {
     transform2raw();
     transfer2Spi();
 }
 
-void Sk6812_Leds::clear(bool displaynow) {
-    print(0);
-    if(displaynow) display(); 
-}
-
-void Sk6812_Leds::print(rgbw32 value) {
-    for(int c = 0; c < length; c++) {
-        pixels[c].set(0x00000000);
-    }
-}
-
-void Sk6812_Leds::transform2raw() {
+void Sk6812_Spi::transform2raw() {
     unsigned char *data2send = spidata;
     Led* currentled = pixels;
     bool halfbyte = false;
@@ -109,10 +94,9 @@ void Sk6812_Leds::transform2raw() {
 
 
 // SPI stuff
-// TODO: encapsulate the SPI 
 // NOTE: includes are intentionally here and not on top
 #include <stdint.h>
-#include <stdio.h>
+//#include <stdio.h>
 #include <stdlib.h>
 #include <sys/ioctl.h>
 #include <fcntl.h>
@@ -120,7 +104,7 @@ void Sk6812_Leds::transform2raw() {
 #include <string.h>
 #include <unistd.h>
 
-bool Sk6812_Leds::transfer2Spi() {
+bool Sk6812_Spi::transfer2Spi() {
     int ret;
     struct spi_ioc_transfer tr;
 
@@ -132,14 +116,14 @@ bool Sk6812_Leds::transfer2Spi() {
     ret = ioctl(spi_fd, SPI_IOC_MESSAGE(1), &tr);
     if (ret < 1)
     {
-        fprintf(stderr, "Can't send spi message");
+        std::cerr << "Can't send spi message" << std::endl;
         return false;
     }
     
     return true;
 }
 
-bool Sk6812_Leds::initSpi() {
+bool Sk6812_Spi::initSpi() {
 
     uint8_t mode = SPI_MODE_0;
     uint8_t bits = 8;
@@ -148,50 +132,50 @@ bool Sk6812_Leds::initSpi() {
 
     spi_fd = ::open("/dev/spidev0.0", O_RDWR);
     if (spi_fd < 0) {
-        fprintf(stderr, "Cannot open /dev/spidev0.0. spi kernel module not loaded?\n");
+        std::cerr << "Cannot open /dev/spidev0.0. spi kernel module not loaded?" << std::endl;
         return false;
     }
 
     // SPI mode
     if (::ioctl(spi_fd, SPI_IOC_WR_MODE, &mode) < 0)
     {
-        fprintf(stderr, "Cannot set spi wr mode\n");
+        std::cerr << "Cannot set spi wr mode\n" << std::endl;
         return false;
     }
     if (::ioctl(spi_fd, SPI_IOC_RD_MODE, &mode) < 0)
     {
-        fprintf(stderr, "Cannot set spi rd mode\n");
+        std::cerr << "Cannot set spi rd mode\n" << std::endl;
         return false;
     }
 
     // Bits per word
     if (::ioctl(spi_fd, SPI_IOC_WR_BITS_PER_WORD, &bits) < 0)
     {
-        fprintf(stderr, "Cannot set spi wr bits per word\n");
+        std::cerr << "Cannot set spi wr bits per word\n" << std::endl;
         return false;
     }
     if (::ioctl(spi_fd, SPI_IOC_RD_BITS_PER_WORD, &bits) < 0)
     {
-        fprintf(stderr, "Cannot set spi rd bits per word\n");
+        std::cerr << "Cannot set spi rd bits per word\n" << std::endl;
         return false;
     }
 
     // Max speed Hz
     if (::ioctl(spi_fd, SPI_IOC_WR_MAX_SPEED_HZ, &speed) < 0)
     {
-        fprintf(stderr, "Cannot set spi wr speed freq\n");
+        std::cerr << "Cannot set spi wr speed freq\n" << std::endl;
         return false;
     }
     if (::ioctl(spi_fd, SPI_IOC_RD_MAX_SPEED_HZ, &speed) < 0)
     {
-        fprintf(stderr, "Cannot set spi rd speed freq\n");
+        std::cerr << "Cannot set spi rd speed freq\n" << std::endl;
         return false;
     }
 
     return true;
 }
 
-void Sk6812_Leds::closeSpi() {
+void Sk6812_Spi::closeSpi() {
     if (spi_fd > 0) {
         ::close(spi_fd);
         spi_fd = -1;
