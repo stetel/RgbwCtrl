@@ -54,9 +54,9 @@ See "examples.txt" for some examples and the syntax below.
 
 * **C** = Clear, clears the led matrix (you must use d to actually send the cleared values to the leds)
 * **D** = Display, displays/renders on the leds what is in the matrix
-* **F <hex>** = Fill, fills the whole matrix with the given color value in the hex format 0xRRGGBBWW
-* **W <millis>** = Wait, wait for given milliseconds (must be in decimal format)
-* **<hex>,<hex>,...** Values to load into each led starting from the first. C,D and F do reset the counter to 0
+* **F \<hex\>** = Fill, fills the whole matrix with the given color value in the hex format 0xRRGGBBWW
+* **W \<millis\>** = Wait, wait for given milliseconds (must be in decimal format)
+* **\<hex\>,\<hex\>,...** Values to load into each led starting from the first. C,D and F do reset the counter to 0
 
 ## Contributing
 
@@ -74,6 +74,6 @@ This project is dual licensed under the GPL2 License or under a commercial licen
 
 ## Acknowledgments
 
-* Jeremy Garff's rpi_ws281x inspred me to build this cli frontend specifically for the sk6812 leds drived by the spi of the RPI 3
+* Jeremy Garff's rpi_ws281x inspired me to build this cli frontend specifically for the sk6812 leds drived by the spi of the RPI 3
 * The project is a side-product of a much larger internal project
 
