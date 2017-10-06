@@ -1,5 +1,6 @@
 #include "sk6812spi.h"
 
+#include <unistd.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,7 +23,7 @@ int width = 10;
 int height = 10;
 bool running = true;
 
-Sk6812_Leds* ledmatrix = NULL;
+Sk6812_Spi* ledmatrix = NULL;
 
 
 static void ctrl_c_handler(int signum)
@@ -133,7 +134,7 @@ int main(int argc, char *argv[])
 	setup_handlers(); // we can interrupt via ctrl-c
 
 	// let's get an instance of the controller class
-	ledmatrix = new Sk6812_Leds(width*height);
+	ledmatrix = new Sk6812_Spi(width*height);
 	
 	// this is to clear the pixels (all off)
 	// NOTE: by adding false we do not call display() so it doesn't go out

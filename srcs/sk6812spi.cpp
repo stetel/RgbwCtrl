@@ -65,6 +65,8 @@ void Sk6812_Spi::transform2raw() {
     // for each led
     for(int c=0; c < length; c++) {
         rgbw32 pxvalue = currentled->pxvalue;
+        //swap r and b input is rrggbbww led requires ggrrbbww
+        pxvalue = ((pxvalue & 0xff000000) >> 8) | ((pxvalue & 0x00ff0000) << 8) | (pxvalue & 0x0000ffff);
         currentled++;
         // for each symbol in each color        
         for(int valbit=0; valbit < 32; valbit++) {
