@@ -1,10 +1,12 @@
 # Rgbctrl
 
-This is a cli frontend and spi driver for strips or arrays using the sk6812 leds via a SPI interface.
+This is a cli frontend and spi driver for strips or arrays using the sk6812rgbw (yes 4 components) leds via a SPI interface.
 It has been tested on the Raspberry 3 but would work most likely also work on the RPI 1, RPI 2 and probably also on other dev boards like the Orange PI
 These leds are in the 5050 format and have not only rgb color components but also the white part.
 On chinese sites you can find types with cold white, warm white and natural white.
-You can find a datasheet here: [ The Sk6812 datashee](https://cdn-shop.adafruit.com/product-files/1138/SK6812+LED+datasheet+.pdf)
+You can find a datasheet here: [ The Sk6812RGBW datasheet](https://cdn-shop.adafruit.com/product-files/2757/p2757_SK6812RGBW_REV01.pdf)
+NOTE: The command does not work currently with the normal sk6812 leds (rgb only). It MUST be the sk6812rgbw i.e. those with the additional W components.
+
 
 ## Getting Started
 Simply clone the repository by using git clone on your system.
