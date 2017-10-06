@@ -1,3 +1,20 @@
+/*
+ * RgbwCtrl -- A  CLI frontend command to drive sk6812 leds via the SPI
+ *
+ * Copyright (C) 2017 Stetel srl
+ *
+ * Georg Campana <g.campana(AT)stetel.com>
+ *
+ * This program is free software, distributed under the terms of
+ * the GNU General Public License Version 2. See the LICENSE.txt file
+ * at the top of the source tree.
+ *
+ * File:   sk6812_leds.cpp
+ * Author: Georg
+ *
+ * Created on 6 October 2017, 23.31
+*/
+
 #include "sk6812_leds.h"
 #include <iostream>
 #include <iomanip>
