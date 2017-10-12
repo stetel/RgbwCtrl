@@ -1,6 +1,6 @@
 # Rgbctrl
 
-This is a cli frontend and spi driver for strips or arrays using the sk6812rgbw (yes 4 components) leds via a SPI interface.
+This is a cli frontend and spi driver for led-strips or arrays using the sk6812rgbw (yes 4 components) leds via a SPI interface.
 It has been tested on the Raspberry 3 but would work most likely also work on the RPI 1, RPI 2 and probably also on other dev boards like the Orange PI
 These leds are in the 5050 format and have not only rgb color components but also the white part.
 On chinese sites you can find types with cold white, warm white and natural white.
@@ -49,7 +49,7 @@ Example to drive a strip of 10 leds:
 ```
 ./rgbwctrl -x 10 -y 1 -c
 ```
-now you can give commands in order to dirve the leds directly from the cli.
+now you can give commands in order to drive the leds directly from the cli.
 See "examples.txt" for some examples and the syntax below.
 
 ## Syntax
@@ -62,7 +62,7 @@ See "examples.txt" for some examples and the syntax below.
 
 ## Contributing
 
-Fill free to submit valuable pull requests.
+Feel free to submit valuable pull requests.
 The code is written in C++ and the main class can be extended (like the spi version is extending it) to support other king of hw interfaces.
 
 ## Authors
@@ -76,6 +76,6 @@ This project is dual licensed under the GPL2 License or under a commercial licen
 
 ## Acknowledgments
 
-* Jeremy Garff's rpi_ws281x inspired me to build this cli frontend specifically for the sk6812 leds drived by the spi of the RPI 3
+* Jeremy Garff's rpi_ws281x project on github inspired me to build this cli frontend specifically for the sk6812rgbw leds drived by the spi of the RPI 3
 * The project is a side-product of a much larger internal project
 
